@@ -1,0 +1,447 @@
+/* Velloway Hair Studio: lavender and grey, light version.
+   Every text colour pair below passes WCAG AA contrast (4.5:1 or more),
+   and form-field borders reach 3:1. */
+
+:root {
+  --bg: #eeecef;
+  --panel: #ffffff;
+  --hero: #e3dcee;
+  --text: #2e2b2f;
+  --muted: #5c5760;
+  --line: #b9b2c2; /* decorative dashed borders */
+  --field-border: #857c90; /* 3:1 or more against white, for form fields */
+  --rule: #dcd7e1;
+  --accent: #6a4c9c;
+  --accent-dark: #563c82;
+  --on-accent: #ffffff;
+  --error: #a3213a;
+
+  --font-head: "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-body: "Inter Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --radius: 8px;
+  --max: 1200px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+p,
+ul {
+  margin: 0;
+}
+
+h1,
+h2 {
+  font-family: var(--font-head);
+  font-weight: 700;
+  line-height: 1.08;
+}
+
+a {
+  color: var(--accent);
+}
+
+a:hover {
+  color: var(--accent-dark);
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.container {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding-inline: 24px;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.small {
+  font-size: 0.9375rem;
+}
+
+/* Skip link: hidden until focused with the keyboard. */
+.skip-link {
+  position: absolute;
+  left: 16px;
+  top: -64px;
+  padding: 12px 16px;
+  background: var(--panel);
+  color: var(--text);
+  border-radius: var(--radius);
+  z-index: 10;
+}
+
+.skip-link:focus {
+  top: 16px;
+}
+
+.demo-banner {
+  background: var(--rule);
+  color: var(--text);
+  text-align: center;
+  font-size: 0.8125rem;
+  padding: 8px 24px;
+}
+
+/* Header */
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: 24px;
+}
+
+.logo {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 1.375rem;
+  letter-spacing: 0.08em;
+}
+
+.site-header nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 28px;
+  align-items: center;
+}
+
+.site-header nav a:not(.button) {
+  color: var(--text);
+  text-decoration: none;
+  padding-block: 12px;
+}
+
+.site-header nav a:not(.button):hover {
+  text-decoration: underline;
+}
+
+/* Buttons: at least 44px tall for easy tapping. */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 28px;
+  border-radius: var(--radius);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+}
+
+.button-small {
+  min-height: 44px;
+  padding: 0 22px;
+}
+
+.button-primary {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.button-primary:hover {
+  background: var(--accent-dark);
+  color: var(--on-accent);
+}
+
+.button-primary:disabled {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+.button-outline {
+  border-color: var(--text);
+  color: var(--text);
+}
+
+.button-outline:hover {
+  background: var(--panel);
+  color: var(--text);
+}
+
+/* Photos */
+.photo {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  background: var(--hero);
+}
+
+.photo img {
+  object-fit: cover;
+}
+
+/* Hero */
+.hero-wrap {
+  padding-bottom: 80px;
+}
+
+.hero {
+  position: relative;
+  min-height: 560px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.hero-photo {
+  position: absolute;
+  inset: 0;
+}
+
+/* Keeps the client by the window in view as the frame narrows. */
+.hero-photo img {
+  object-position: 82% 50%;
+}
+
+.hero-text {
+  position: relative;
+  margin: 24px;
+  padding: 32px;
+  max-width: 760px;
+  background: rgb(255 255 255 / 0.9);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.eyebrow {
+  font-size: 0.875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.hero h1 {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* Services */
+.services {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 48px;
+  padding-block: 40px 80px;
+}
+
+.services-intro {
+  flex: 1 1 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.services-intro h2,
+.booking-intro h2 {
+  font-size: clamp(2.25rem, 4.5vw, 3rem);
+}
+
+.service-list {
+  flex: 2 1 520px;
+  list-style: none;
+  padding: 0;
+}
+
+.service {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding-block: 24px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.service h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.price {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+/* Booking */
+.panel {
+  background: var(--panel);
+  padding-block: 80px;
+}
+
+.booking {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 48px;
+}
+
+.booking-intro {
+  flex: 1 1 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.booking-form {
+  flex: 1 1 480px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field-wide {
+  grid-column: 1 / -1;
+}
+
+.field label {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.field input,
+.field select {
+  font: inherit;
+  min-height: 48px;
+  padding: 0 14px;
+  border: 1px solid var(--field-border);
+  border-radius: var(--radius);
+  background: var(--panel);
+  color: var(--text);
+}
+
+.field input[aria-invalid="true"],
+.field select[aria-invalid="true"] {
+  border: 2px solid var(--error);
+}
+
+.field-error {
+  color: var(--error);
+  font-size: 0.875rem;
+}
+
+.honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.form-status:empty {
+  display: none;
+}
+
+.form-status {
+  padding: 14px 16px;
+  border-radius: var(--radius);
+}
+
+.form-status-success {
+  background: var(--hero);
+  color: var(--text);
+}
+
+.form-status-error {
+  background: #fbe9ec;
+  color: var(--error);
+}
+
+/* Footer */
+.site-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 48px;
+  justify-content: space-between;
+  padding-block: 64px;
+}
+
+.footer-heading {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.credit {
+  align-self: flex-end;
+}
+
+/* Phones */
+@media (max-width: 560px) {
+  .booking-form {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* On phones the photo sits above the headline card instead of behind it,
+     so the photo stays visible. */
+  .hero {
+    min-height: 0;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-photo {
+    position: relative;
+    height: 280px;
+  }
+
+  .hero-text {
+    margin: -48px 12px 0;
+    padding: 24px;
+  }
+
+  .service {
+    flex-direction: column;
+    gap: 4px;
+  }
+}
