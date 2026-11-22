@@ -15,6 +15,12 @@ caught=0
 missed=0
 broken=0
 
+# Runs the tests in the scratch copy with colour switched off: CI runners turn
+# colour on, and colour codes would hide the "Tests N failed" summary line.
+run_tests() {
+  env -u FORCE_COLOR NO_COLOR=1 npx vitest run > "$WORK/log.txt" 2>&1
+}
+
 # plant <description> <file> <perl substitution>
 # plant_bytes <description> <file> <node code>   (edits a binary file; the code gets `b`, a Buffer)
 plant() {
@@ -46,10 +52,10 @@ apply_and_test() {
     return
   fi
 
-  if (cd "$WORK/copy" && npx vitest run > "$WORK/log.txt" 2>&1); then
+  if (cd "$WORK/copy" && run_tests); then
     echo "MISSED: $description"
     missed=$((missed + 1))
-  elif grep -qE 'Tests +[1-9][0-9]* failed' "$WORK/log.txt"; then
+  elif perl -pe 's/\e\[[0-9;]*m//g' "$WORK/log.txt" | grep -qE 'Tests +[1-9][0-9]* failed'; then
     echo "caught: $description"
     caught=$((caught + 1))
   else
@@ -64,7 +70,7 @@ apply_and_test() {
 rm -rf "$WORK/copy"; mkdir -p "$WORK/copy"
 tar --exclude=node_modules --exclude=.next -cf - . | tar -xf - -C "$WORK/copy"
 ln -s "$ROOT/node_modules" "$WORK/copy/node_modules"
-if ! (cd "$WORK/copy" && npx vitest run > "$WORK/log.txt" 2>&1); then
+if ! (cd "$WORK/copy" && run_tests); then
   echo "STOP: the unchanged project does not pass its tests:"; tail -10 "$WORK/log.txt"; exit 1
 fi
 echo "baseline: unchanged project passes"
