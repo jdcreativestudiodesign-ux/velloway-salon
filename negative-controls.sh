@@ -13,6 +13,7 @@ trap 'rm -rf "$WORK"' EXIT
 
 caught=0
 missed=0
+broken=0
 
 # plant <description> <file> <perl substitution>
 # plant_bytes <description> <file> <node code>   (edits a binary file; the code gets `b`, a Buffer)
@@ -48,11 +49,25 @@ apply_and_test() {
   if (cd "$WORK/copy" && npx vitest run > "$WORK/log.txt" 2>&1); then
     echo "MISSED: $description"
     missed=$((missed + 1))
-  else
+  elif grep -qE 'Tests +[1-9][0-9]* failed' "$WORK/log.txt"; then
     echo "caught: $description"
     caught=$((caught + 1))
+  else
+    # The run failed without any test failing (a broken setup or a file that won't load): proves nothing.
+    echo "BROKEN: $description (the test run did not complete; last lines below)"
+    tail -5 "$WORK/log.txt"
+    broken=$((broken + 1))
   fi
 }
+
+# Baseline: the unchanged project must pass, or every "caught" below would be meaningless.
+rm -rf "$WORK/copy"; mkdir -p "$WORK/copy"
+tar --exclude=node_modules --exclude=.next -cf - . | tar -xf - -C "$WORK/copy"
+ln -s "$ROOT/node_modules" "$WORK/copy/node_modules"
+if ! (cd "$WORK/copy" && npx vitest run > "$WORK/log.txt" 2>&1); then
+  echo "STOP: the unchanged project does not pass its tests:"; tail -10 "$WORK/log.txt"; exit 1
+fi
+echo "baseline: unchanged project passes"
 
 plant "salon open on Sundays and Mondays" \
   src/lib/salon.ts 's/OPEN_DAYS = \[2, 3, 4, 5, 6\]/OPEN_DAYS = [0, 1, 2, 3, 4, 5, 6]/'
@@ -85,5 +100,5 @@ plant "hero photo description emptied" \
   src/lib/photos.ts 's/alt: "A bright salon[^"]*"/alt: ""/'
 
 echo
-echo "$caught caught, $missed missed"
-[ "$missed" -eq 0 ]
+echo "$caught caught, $missed missed, $broken broken"
+[ "$missed" -eq 0 ] && [ "$broken" -eq 0 ]

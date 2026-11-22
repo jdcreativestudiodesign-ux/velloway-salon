@@ -1,5 +1,7 @@
 # Velloway Hair Studio: landing page with online booking
 
+[![tests](https://github.com/jdcreativestudiodesign-ux/velloway-salon/actions/workflows/test.yml/badge.svg)](https://github.com/jdcreativestudiodesign-ux/velloway-salon/actions/workflows/test.yml)
+
 **Portfolio sample by jdcreative.studiodesign.** The salon, its prices and its details are invented. The page, the booking form and the tests are real.
 
 A fast, mobile-first one-page site for a small hair salon: services and prices, opening hours, and a booking-request form that checks each request before it is accepted.
